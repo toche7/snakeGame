@@ -7,7 +7,9 @@ clock = pygame.time.Clock()
 running = True
 oldkey = 0
 font = pygame.font.Font(None, 36)
-
+sound_music = pygame.mixer.Sound("sounds/beattheme1-28954.mp3")
+sound_score = pygame.mixer.Sound("sounds/score.mp3")
+sound_end = pygame.mixer.Sound("sounds/buzzer.mp3")
 def gen_start_pos():
     return (random.randint(0, 1280), random.randint(0, 720))
 
@@ -16,13 +18,14 @@ def you_lose():
     #show you lose on the screen
     text = font.render("You Lose", True, "red")
     screen.blit(text, (600, 360))
+    sound_end.play()
     pygame.display.flip()
     pygame.time.delay(2000)
 
 
 #ask for restart
 def ask_for_restart():
-    text = font.render("Press R to restar or Esc for Quit", True, "red")
+    text = font.render("Press R to restart or Esc for Quit", True, "red")
     screen.blit(text, (470, 260))
     pygame.display.flip()
     # wait for user to press R to restart
@@ -71,6 +74,7 @@ snake = [snake_pixel.copy()]
 food = pygame.Rect(0, 0, pixel_width, pixel_width)
 food.center = pygame.Vector2(gen_start_pos())
 
+sound_music.play(loops=-1)
 while running:
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -84,7 +88,8 @@ while running:
 
     score_text = font.render(f"Score: {snake_length-1}", True, "blue")
     screen.blit(score_text, (0, 0))
-    
+
+
     # RENDER YOUR GAME HERE
     if old_pos != player_pos:
         old_pos = player_pos.copy()
@@ -92,6 +97,8 @@ while running:
             snake = snake[:snake_length-1]
             snake.insert(0, snake[0].copy())
         snake[0].center = player_pos
+        #play sound when snake move
+
 
     # snake collision itself
     for segment in snake[1:]:
@@ -114,6 +121,7 @@ while running:
         snake_length += 1
         snake.append(snake[-1].copy())
         print(snake_length)
+        sound_score.play()
     
     if event.type == pygame.KEYDOWN:
         oldkey = event.key  
