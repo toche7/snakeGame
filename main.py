@@ -1,6 +1,7 @@
 import pygame
 import random
 # pygame setup
+# test update 
 pygame.init()
 screen = pygame.display.set_mode((1280, 720))
 clock = pygame.time.Clock()
@@ -63,7 +64,7 @@ def restart():
     oldkey = 0
 
 #playground
-pixel_width = 50
+pixel_width = 40
 snake_pixel = pygame.Rect(0, 0, pixel_width, pixel_width)
 player_pos = pygame.Vector2(gen_start_pos())
 snake_pixel.center = player_pos
